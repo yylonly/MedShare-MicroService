@@ -1,0 +1,24 @@
+		.ui-layout-north .ui-layout-unit-content {
+		    overflow: visible !important;
+		}
+		
+		.ui-layout-north {
+		    z-index: 30 !important;
+		    overflow: visible !important;
+		}
+		
+		.ui-layout-unit {
+		    border: 0 !important;
+		}		
+		.version {
+			float: right;
+			margin-right: 30px;
+		}
+		.loginlink {
+			float: right;
+			margin-right: 30px;
+		}
+		.ui-menuitem-text {
+			margin-left: 20px;
+			margin-right: 20px;
+		}

@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+<f:view>
+<h:head>
+	<!-- css style -->
+	<h:outputStylesheet name="css/style.css" />
+
+    <!-- Invoked after click login, Login panel shake if failure, otherwise hidden -->
+    <script type="text/javascript">  
+	    function handleLoginRequest(xhr, status, args) {  
+	        if(args.validationFailed || !args.loggedIn) {  
+	            PF('dlg').jq.effect("shake", { times:5 }, 100);  
+	        }   
+	        else {  
+	            PF('dlg').hide();  
+	            PF('login').hide(); 
+	            PF('logout').hide(); 
+	             
+	        }  
+	    }  
+	</script>  
+</h:head>
+
+<h:body>
+     
+	 <p:layout fullPage="true"> 
+	   
+	   <!-- layout for head -->
+	   <p:layoutUnit position="north"  size="220"> 	    
+	     <!-- Logo, login link and panel-->
+	     <h:form>              
+	     	<p:graphicImage value="resources/images/logo.png" />  
+	     </h:form> 	
+	     
+	     <!-- Menu Bar, no function now-->
+	     <h:form>   
+			  <p:menubar>  
+			    <p:menuitem value="Home" url="#{loginBean.domain}"  /> 
+			     <p:submenu label="Introduction" >  
+		            <p:menuitem value="De-identification" url="#" />  
+		            <p:menuitem value="SQL injection" url="#"  />  
+		        </p:submenu>  
+		        <p:menuitem value="Dynamic Query" url="dynamicq.jsf" />   
+	
+				<p:menuitem value="Contact" url="http://yylife.me" /> 
+				
+		        <f:facet name="options">  
+		            <p:inputText style="margin-right:10px"/>  
+		            <p:commandButton icon="ui-icon-search" type="button" value="search" />  
+		        </f:facet>  
+		    </p:menubar>        
+		 </h:form>
+   	   </p:layoutUnit>
+
+
+	   <!-- layout for body -->
+       <p:layoutUnit id="center" position="center"> 
+		   <h:form id="form">
+		   
+		    <!-- Message Bar -->
+		    <p:growl id="msgs" showDetail="true" life="2000" />
+		 
+		    <h:panelGrid  cellpadding="5">
+		    
+			    <f:facet name="header">
+			        <p:row>
+			            <p:column>Dynamic Query</p:column>
+			        </p:row>	     
+			    </f:facet>
+			 
+			   <p:row>
+			   <p:column> Total number of endoscopic examination for different country from  
+			        <p:outputLabel for="startdate" value=" start date " />
+			        <p:calendar id="startdate" value="#{dynamicQueryBean.startdate}" pattern="yyyy-MM-dd">
+			            <p:ajax event="dateSelect" listener="#{dynamicQueryBean.onDateSelect}" update="msgs enddate" />
+			        </p:calendar>
+			      
+			  		<p:outputLabel for="enddate" value=" to end date " />
+			        <p:calendar id="enddate" value="#{dynamicQueryBean.enddate}" pattern="yyyy-MM-dd" mindate="#{dynamicQueryBean.startdate}">
+			            <p:ajax event="dateSelect" listener="#{dynamicQueryBean.endDateSelect}" update="msgs sget" />
+			        </p:calendar>
+		        </p:column>
+		        </p:row>
+		       
+		  
+			  <p:row>
+			   	<p:column>
+				<!-- normal way --> 
+					<p:button id="sget" href=" #{dynamicQueryBean.URL}" value="GetMethod" icon="ui-icon-star"></p:button>
+				</p:column>
+				<!-- Invoke ManageBean -->
+				<p:column>
+			    <p:commandButton value="MangedBean" update="msgs" actionListener="#{dynamicQueryBean.dynamicQuery}" icon="ui-icon-check" />
+			    </p:column>
+			  </p:row>
+		      </h:panelGrid>
+		</h:form>
+	   </p:layoutUnit> 
+   	      
+   	   <!-- layout for footer -->    
+	   <p:layoutUnit position="south" size="100"> 
+	      <h:form>
+	   	   <p:separator /> 
+		      <p:outputLabel styleClass="version">EHR System - Version 3.0</p:outputLabel> 
+		  </h:form>		      
+	   </p:layoutUnit>  
+   	 </p:layout>  
+</h:body>
+</f:view>
+</html>
