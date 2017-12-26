@@ -311,7 +311,7 @@ CREATE TABLE `prescription` (
   `PID` mediumint(9) NOT NULL AUTO_INCREMENT,
   `Patient_ID` mediumint(9) DEFAULT NULL,
   `Doctor_ID` mediumint(9) DEFAULT NULL,  
-  `Date` date DEFAULT NULL,
+  `Pres_Date` date DEFAULT NULL,
   PRIMARY KEY (`PID`),
   KEY `Patient_ID` (`Patient_ID`),
   CONSTRAINT `prescription_ibfk_1` FOREIGN KEY (`Patient_ID`) REFERENCES `patient` (`PID`),
@@ -391,21 +391,30 @@ UNLOCK TABLES;
 
 -- Sample of Queries
 
--- Total number of patients who received medical prescription from the doctor Tom Baker from January 1, 2017 to April 1, 2017.
+-- Total number of prescription made up from January 1, 2017 to December 31, 2017.
+SELECT DISTINCT COUNT(pres.PID) as PresNum
+FROM prescription as pres
+WHERE pres.Pres_Date BETWEEN '2017-1-1' AND '2017-12-31';
+
+
+-- Total number of patients who received medical prescription from the doctor Tom Baker from January 1, 2017 to December 31, 2017.
 SELECT DISTINCT COUNT(p.PID)
 FROM patient as p, doctor as d, prescription as pres
 WHERE p.PID = pres.Patient_ID 
     and d.DID = pres.Doctor_ID
-    and d.Name = 'Tom' and d.Surname = 'Baker';
+    and d.Name = 'Tom' and d.Surname = 'Baker'
+    and pres.Pres_Date BETWEEN '2017-1-1' AND '2017-12-31';
 
 
 -- Age profile of patients who took the medication Acetaminophen from January 1, 2017 to December 31, 2017.
+DROP View IF EXISTS `PaientMed`;
 CREATE View PaientMed AS
-SELECT patient.PID, patient.DoB, medication.Namepaientmed
+SELECT patient.PID, patient.DoB, medication.Name
 FROM patient, prescription, prescriptmed, medication
 WHERE patient.PID = prescription.Patient_ID
     and prescription.PID = prescriptmed.PRESCRIPTID
-    and prescriptmed.MEDID = medication.MID;
+    and prescriptmed.MEDID = medication.MID
+    and prescription.Pres_Date BETWEEN '2017-1-1' AND '2017-12-31';
 
 SELECT *
 FROM
@@ -427,15 +436,14 @@ FROM
     AND YEAR( CURRENT_DATE( ) ) - YEAR( DoB ) >40 
 ) AS NumAbove40;
 
-
-
-
 -- Top 5 medication prescripted by doctors and for each medication the number of prescriptions which took it from from January 1, 2017 to December 31, 2017.
 SELECT medication.Name, COUNT(prescription.PID) as TotalNum
 FROM prescription, prescriptmed, medication
 WHERE prescription.PID = prescriptmed.PRESCRIPTID
     and prescriptmed.MEDID = medication.MID
+    and prescription.Pres_Date BETWEEN '2017-1-1' AND '2017-12-31'
 GROUP BY medication.MID
+LIMIT 5;
 
 
 
