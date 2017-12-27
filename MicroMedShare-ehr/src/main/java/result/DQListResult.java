@@ -13,9 +13,9 @@ import javax.json.bind.JsonbBuilder;
  */
 public class DQListResult {
     private String countryName;
-    private int totalNumber;
+    private long totalNumber;
     
-    public DQListResult(String countryName, int totalNumber){
+    public DQListResult(String countryName, long totalNumber){
         this.countryName = countryName;
         this.totalNumber = totalNumber;
     }
@@ -32,7 +32,7 @@ public class DQListResult {
         return totalNumber;
     }
 
-    public void setTotalNumber(int totalNumber) {
+    public void setTotalNumber(long totalNumber) {
         this.totalNumber = totalNumber;
     }
     
