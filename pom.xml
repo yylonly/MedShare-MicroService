@@ -9,6 +9,7 @@
   <modules>
     <module>MicroMedShare-ear</module>
     <module>MicroMedShare-web</module>
-    <module>MicroMedShare-ejb</module>
+    <module>MicroMedShare-auth</module>
+    <module>MicroMedShare-ehr</module>
   </modules>
 </project>

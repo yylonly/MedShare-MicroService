@@ -1,12 +1,10 @@
 package mangedbean;
 
 import entity.User;
-import ejb.CheckLogin;
+import net.mydreamy.auth.CheckLogin;
 import ejb.ListQuerys;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -38,71 +36,58 @@ public class LoginBean
     public void setUser(User user) {
         this.user = user;
     }
-
-
-
-  
-
-	//Result of querys
-	private List<ListResult> rsquerylist;
-	private String domain;
-	private boolean loggedIn;
-	private ExternalContext externalContext;
-	@EJB 
-	CheckLogin check;
- 
-        
-        
-	
-	//SessionBean Queryentires by user
-	@EJB
-	ListQuerys listquerys;
+    //Result of querys
+    private List<ListResult> rsquerylist;
+    private String domain;
+    private boolean loggedIn;
+    private ExternalContext externalContext;
+    @EJB
+    CheckLogin check;
+    //SessionBean Queryentires by user
+    @EJB
+    ListQuerys listquerys;
 	  
-	@PostConstruct
+    @PostConstruct
     public void init() { 
+        //init user and query list
+	user = new User();
+	rsquerylist = new ArrayList<ListResult>();
+	externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		
-		//init user and query list
-		user = new User();
-		rsquerylist = new ArrayList<ListResult>();
-		externalContext = FacesContext.getCurrentInstance().getExternalContext();
-		
-		//Get Domain
-		HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		domain = origRequest.getRequestURL().toString();
+	//Get Domain
+	HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+	domain = origRequest.getRequestURL().toString();
     }
 		        
 	  
-	public void logout()
-	{       
-                
-		System.out.println("run logout");
-		addMessage("Successful Logout");
-		externalContext.invalidateSession();
-                //init user and query list
-		user = new User();
-		rsquerylist = new ArrayList<ListResult>();
-		loggedIn = false;
-		System.out.println("run finish logout");
-	}
+    public void logout(){       
+        System.out.println("run logout");
+	addMessage("Successful Logout");
+	externalContext.invalidateSession();
+        //init user and query list
+	user = new User();
+	rsquerylist = new ArrayList<ListResult>();
+	loggedIn = false;
+	System.out.println("run finish logout");
+    }
 	
 	
-	public void addMessage(String summary) {
-	        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary,  null);
-	        FacesContext.getCurrentInstance().addMessage(null, message);
-	}
+    public void addMessage(String summary) {
+	FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary,  null);
+	FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 
-	public void login()
-	{
-		//invoke login session bean to check username and password
-		boolean result = check.Check(user.getUsername(), user.getPassword());
-		
-		//Set Message Display
-		RequestContext context = RequestContext.getCurrentInstance();  
+    public void login() {
+        //invoke login session bean to check username and password
+	boolean result = check.Check(user.getUsername(), user.getPassword());
+	
+        //Set Message Display
+	RequestContext context = RequestContext.getCurrentInstance();  
         FacesMessage msg = null; 
         //Login State
         loggedIn = result;        
         //Store session
-  //      externalContext.getSessionMap().put("LoginState", loggedIn);
+        // externalContext.getSessionMap().put("LoginState", loggedIn);
         
         if(result == true) {    
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", user.getUsername());  
@@ -111,25 +96,22 @@ public class LoginBean
         }  
         FacesContext.getCurrentInstance().addMessage(null, msg);  
         context.addCallbackParam("loggedIn", loggedIn); 
-        
-	}	
+    }	
 	
-	//Get Queryentities by user
-	public List<ListResult> getRsquerylist() {
-		return listquerys.listAll(user, loggedIn);
-	}
+    //Get Queryentities by user
+    public List<ListResult> getRsquerylist() {
+        return listquerys.listAll(user, loggedIn);
+    }
 
+    public void setRsquerylist(List<ListResult> rsquerylist) {
+        this.rsquerylist = rsquerylist;
+    }
 
-	public void setRsquerylist(List<ListResult> rsquerylist) {
-		this.rsquerylist = rsquerylist;
-	}
+    public String getDomain() {
+        return domain;
+    }
 
-
-	public String getDomain() {
-		return domain;
-	}
-
-	public void setDomain(String domain) {
-		this.domain = domain;
-	}
+    public void setDomain(String domain) {
+	this.domain = domain;
+    }
 }
