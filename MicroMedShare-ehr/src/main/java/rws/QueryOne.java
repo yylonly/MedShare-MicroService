@@ -48,26 +48,7 @@ public class QueryOne {
             + "AND e.endoscopyDate BETWEEN \'2010-1-1\' AND \'2010-12-30\' "
             + "GROUP BY p.country "
             + "ORDER BY COUNT(e.reportID) DESC";
-        System.out.print(sql);
         String list = bean.query(sql);
-//        System.out.print("result size:" + list.size());
-//        System.out.print(sql);
-//        Query query =  emf.createEntityManager().createQuery(sql);
-        
-//        List<DQListResult> result = query.getResultList();
-//        System.out.print("result size:" + result.size());
-//        
-//        return "";
-    	 
-//    	String sql = "select Country, COUNT(Report_ID ) AS TotalNum " +
-//			"FROM examination, patient " + 
-//			"WHERE examination.Patient_ID = patient.PID " +
-//			"AND Endoscopy_Date " +
-//			"BETWEEN \'2010-1-1\' " +
-//			"AND \'2010-12-30\' " +
-//			"GROUP BY Country   " +
-//			"Order By TotalNum desc ";
-//    	return bean.query(sql);
         return list;
     }
 

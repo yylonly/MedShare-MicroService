@@ -50,25 +50,46 @@ public class QueryTwoBean {
 //    }
     
     // Return Diagnoses_Text and  Number
+//    public String query(String sql)
+//    {
+//    	String result = "[";
+//        Query query =  emf.createEntityManager().createNativeQuery(sql);
+//	
+//        @SuppressWarnings("unchecked")
+//	List<Object[]> list = query.getResultList();
+//	Object[] aa;
+//		
+//        for (int i = 0; i < list.size(); i++){
+//            aa = list.get(i);
+//            if (aa.length != 2){
+//                continue;
+//            }
+//            result += "{";
+//            if (i == list.size() - 1){
+//                result += "\"DiagnosesText\":\"" + aa[0] +"\",\"Number\":\"" + aa[1] + "\"}"; 
+//            }else{
+//                result += "\"DiagnosesText\":\"" + aa[0] +"\",\"Number\":\"" + aa[1] + "\"},"; 
+//            }
+//        }
+//
+//        result += "]";
+//	return result;
+//    }
+    
     public String query(String sql)
     {
-    	String result = "[";
-        Query query =  emf.createEntityManager().createNativeQuery(sql);
-	
+        Query query =  emf.createEntityManager().createQuery(sql);
+	String result = "[";
         @SuppressWarnings("unchecked")
-	List<Object[]> list = query.getResultList();
-	Object[] aa;
+	List<QueryTwoListResult> list = query.getResultList();
 		
         for (int i = 0; i < list.size(); i++){
-            aa = list.get(i);
-            if (aa.length != 2){
-                continue;
-            }
-            result += "{";
+            QueryTwoListResult item = list.get(i);
+            
             if (i == list.size() - 1){
-                result += "\"DiagnosesText\":\"" + aa[0] +"\",\"Number\":\"" + aa[1] + "\"}"; 
-            }else{
-                result += "\"DiagnosesText\":\"" + aa[0] +"\",\"Number\":\"" + aa[1] + "\"},"; 
+                result += item.toJson();
+            }else {
+                result += item.toJson() + ",";
             }
         }
 

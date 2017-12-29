@@ -1,6 +1,5 @@
 package rws;
 
-
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -9,6 +8,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
 import ejb.QueryThreeBean;
+import result.NumberOfAge;
 
 @Path("querythree")
 public class QueryThree {
@@ -32,36 +32,38 @@ public class QueryThree {
     @Produces("application/json")
     public String getHtml() {
         // TODO return proper representation object
-    	String sql = "SELECT * " +
-    			"FROM ( " + 
-    			" SELECT DISTINCT COUNT( PID ) AS NumBelow18 " +
-    			" FROM patient, examination " +
-    			"WHERE patient.PID = examination.Patient_ID " +
-    			"AND YEAR( CURRENT_DATE( ) ) - YEAR( DoB ) <18 " +
-    			") AS NumBelow18, ( " +
-    			
-    			"SELECT DISTINCT COUNT( PID ) AS Num18to40 " +		
-    			"FROM patient, examination " +   			
-    			"WHERE patient.PID = examination.Patient_ID " +
-    			"AND YEAR( CURRENT_DATE( ) ) - YEAR( DoB )  " +		
-    			"BETWEEN 18 " +
-    			"AND 40 " +
-    			" ) AS Num18to40, ( " +
-    			
-    			"SELECT DISTINCT COUNT( PID ) AS Num40to60 " +
-			    "FROM patient, examination "+
-			    "WHERE patient.PID = examination.Patient_ID "+
-			    "AND YEAR( CURRENT_DATE( ) ) - YEAR( DoB ) " + 
-			    "BETWEEN 40 " + 
-			    "AND 60 " +
-			    ") AS Num40to60, ( " +
-			   
-    			"SELECT DISTINCT COUNT( PID ) AS NumAbove60 " +
-			    "FROM patient, examination " +
-			    "WHERE patient.PID = examination.Patient_ID " +
-			    "AND YEAR( CURRENT_DATE( ) ) - YEAR( DoB ) >60 " +
-			    ") AS NumAbove60 ";
-    	return bean.query(sql);
+
+        String numBelow18SQL = "SELECT COUNT( p.pid) "
+                + "FROM Patient p, Examination e "
+                + "WHERE e.patientID.pid = p.pid "
+                + "AND FUNC('YEAR', CURRENT_DATE) - FUNC('YEAR', p.doB) < 18";
+        long numBelow18 = bean.query(numBelow18SQL);
+        
+        String num18to40SQL = "SELECT COUNT( p.pid) "
+                + "FROM Patient p, Examination e "
+                + "WHERE e.patientID.pid = p.pid "
+                + "AND FUNC('YEAR', CURRENT_DATE) - FUNC('YEAR', p.doB) "
+                + "BETWEEN 18 "
+                + "AND 40 ";
+        long num18to40 = bean.query(num18to40SQL);
+        
+        String num40to60SQL = "SELECT COUNT( p.pid) "
+                + "FROM Patient p, Examination e "
+                + "WHERE e.patientID.pid = p.pid "
+                + "AND FUNC('YEAR', CURRENT_DATE) - FUNC('YEAR', p.doB) "
+                + "BETWEEN 40 "
+                + "AND 60 ";
+        long num40to60 = bean.query(num40to60SQL);
+        
+        String numAbove60SQL = "SELECT COUNT( p.pid) "
+                + "FROM Patient p, Examination e "
+                + "WHERE e.patientID.pid = p.pid "
+                + "AND FUNC('YEAR', CURRENT_DATE) - FUNC('YEAR', p.doB) > 60";
+        long numAbove60 = bean.query(numAbove60SQL);
+        
+        NumberOfAge numberOfAge = new NumberOfAge(numBelow18, num18to40, num40to60, numAbove60);
+  
+        return numberOfAge.toJson();
     }
     
      

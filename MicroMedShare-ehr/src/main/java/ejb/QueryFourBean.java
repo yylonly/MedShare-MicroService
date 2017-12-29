@@ -11,6 +11,7 @@ import javax.ejb.LocalBean;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
+import result.QueryFourListResult;
 
 /**
  *
@@ -36,26 +37,21 @@ public class QueryFourBean {
     public String query(String sql)
     {
     	String result = "[";
-        Query query =  emf.createEntityManager().createNativeQuery(sql);
+        Query query =  emf.createEntityManager().createQuery(sql);
 	
         @SuppressWarnings("unchecked")
-	List<Object[]> list = query.getResultList();
-	Object[] aa;
+	List<QueryFourListResult> list = query.getResultList();
+	
 		
         for (int i = 0; i < list.size(); i++){
-            aa = list.get(i);
+            QueryFourListResult item = list.get(i);
             
-            if (aa.length != 2){
-                continue;
-            }
-            result += "{";
             if (i == list.size() - 1){
-                result += "\"Gender\":\"" + aa[0] +"\",\"NumberOfPatients\":\"" + aa[1] + "\"}"; 
-            }else{
-                result += "\"Gender\":\"" + aa[0] +"\",\"NumberOfPatients\":\"" + aa[1] + "\"},"; 
+                result += item.toJson();
+            }else {
+                result += item.toJson() + ",";
             }
         }
-    
         result += "]";
 	return result;
     }

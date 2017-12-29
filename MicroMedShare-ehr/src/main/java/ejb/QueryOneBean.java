@@ -52,7 +52,7 @@ public class QueryOneBean {
                 result += item.toJson() + ",";
             }
         }
-        System.out.print("list size:" + list.size());
+//        System.out.print("list size:" + list.size());
 	
         result += "]";
 	return result;

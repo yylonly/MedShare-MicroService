@@ -29,15 +29,13 @@ public class QueryTwo {
     @GET
     @Produces("application/json")
     public String getHtml() {
-    	String sql = "SELECT Diagnoses_Text, COUNT( Diagnoses_Text ) AS Num " +
-    			"FROM examination " + 
-    			"GROUP BY Diagnoses_Text " +
-    			"HAVING COUNT( Diagnoses_Text ) >0 " +
-    			" LIMIT 5 ";
-//        String sql = "SELECT new result.QueryTwoListResult(e.diagnosesText, 100) "
-//                + "From Examination e";
-                
         
-    	return bean.query(sql);
+        String sql = "SELECT new result.QueryTwoListResult(e.diagnosesText,  COUNT(e.diagnosesText)) "
+            + "FROM Examination e "
+            + "GROUP BY e.diagnosesText "
+            + "ORDER BY COUNT(e.diagnosesText) DESC";
+        
+        String list = bean.query(sql);
+    	return list;
     }
 }

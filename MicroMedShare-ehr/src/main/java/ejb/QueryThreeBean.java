@@ -5,13 +5,11 @@
  */
 package ejb;
 
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
-
 /**
  *
  * @author lp
@@ -33,30 +31,12 @@ public class QueryThreeBean {
     }
     
     // Return Diagnoses_Text and  Number
-    public String query(String sql)
+    public long query(String sql)
     {
-    	String result = "{";
-        Query query =  emf.createEntityManager().createNativeQuery(sql);
-	
+        Query query =  emf.createEntityManager().createQuery(sql);
+
         @SuppressWarnings("unchecked")
-	List<Object[]> list = query.getResultList();
-	Object[] aa;
-		
-        for (int i = 0; i < list.size(); i++){
-            aa = list.get(i);
-          
-            if (aa.length != 4){
-                continue;
-            }
-           
-            result += "\"NumBelow18\":\"" + aa[0] 
-                    +"\",\"Num18to40\":\"" + aa[1]
-                    +"\",\"Num40to60\":\"" + aa[2]
-                    +"\",\"NumAbove60\":\"" + aa[3]
-                    + "\""; 
-        }
-    
-        result += "}";
-	return result;
+	long number = (long) query.getSingleResult();
+	return number;
     }
 }

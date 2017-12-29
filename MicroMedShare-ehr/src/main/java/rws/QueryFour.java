@@ -31,21 +31,16 @@ public class QueryFour {
     @Produces("application/json")
     public String getHtml() {
         // TODO return proper representation object
-    	String sql = "SELECT GENDER, COUNT( PATIENT_ID ) AS NUMBEROFPATIENTS " +
-    			"FROM clinicaldetection, patient " +
-    			"WHERE clinicaldetection.PATIENT_ID = patient.PID " +
-    			"AND TIMES =1 " +
-    			"AND HBSAG =0 " +
-    			"AND PATIENT_ID " +
-    			"IN ( " +
-    			"SELECT PATIENT_ID " +
-    			"FROM CLINICALDETECTION " + 
-    			"WHERE TIMES =3 " +
-    			"AND ANTIHBS =0 " +
-    			") " +
-    			"GROUP BY GENDER ";
-
-    	
+        
+    	String sql = "SELECT new result.QueryFourListResult(p.gender, COUNT(c.patientID.pid)) " +
+    			"FROM Clinicaldetection c, Patient p " +
+                        "WHERE c.patientID.pid = p.pid " +
+                        "AND c.times = \'1\' " +
+                        "AND c.hBsAg = \'0\' " +
+                        "AND c.patientID.pid IN ( SELECT cl.patientID.pid FROM Clinicaldetection cl " +
+                        "WHERE cl.times = \'3\' " +
+                        "AND cl.antiHBs = \'0\' ) " +
+                        "GROUP BY p.gender ";
     	return  bean.query(sql);
     }
 }
