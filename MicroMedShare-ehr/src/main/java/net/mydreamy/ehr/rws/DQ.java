@@ -72,13 +72,11 @@ public class DQ {
         //Run Query :name is vaibiles, result is a list type of ListResult
         String sql = "SELECT new net.mydreamy.ehr.result.DQListResult(p.country,  COUNT(e.reportID)) "
                 + "FROM Examination e, Patient p "
-                + "WHERE e.patientID = p.pid"
-                + "AND e.endoscopyDate BETWEEN :startdate AND :enddate "
+                + "WHERE e.patientID.pid = p.pid "
+                + "AND e.endoscopyDate BETWEEN \'"+ startdate +"\' AND \'"+enddate+"\' "
                 + "GROUP BY p.country "
                 + "ORDER BY COUNT(e.reportID) DESC";
         Query query =  emf.createEntityManager().createQuery(sql);
-        query.setParameter("startdate", startdate);
-        query.setParameter("enddate", enddate);
         
         String result = "[";
         @SuppressWarnings("unchecked")
