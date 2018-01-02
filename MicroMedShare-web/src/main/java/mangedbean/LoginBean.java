@@ -5,6 +5,7 @@ import net.mydreamy.auth.CheckLogin;
 import ejb.ListQuerys;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -23,10 +24,20 @@ import result.ListResult;
 @SessionScoped
 public class LoginBean  
 {
+    
 
     @EJB
     private ListQuerys listQuerys;
     
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
     private User user;
 
     public User getUser() {
@@ -68,6 +79,7 @@ public class LoginBean
 	user = new User();
 	rsquerylist = new ArrayList<ListResult>();
 	loggedIn = false;
+        token = "";
 	System.out.println("run finish logout");
     }
 	
@@ -79,23 +91,31 @@ public class LoginBean
 
     public void login() {
         //invoke login session bean to check username and password
-	boolean result = check.Check(user.getUsername(), user.getPassword());
+	Map<String, String> result = check.Check(user.getUsername(), user.getPassword());
 	
         //Set Message Display
 	RequestContext context = RequestContext.getCurrentInstance();  
         FacesMessage msg = null; 
         //Login State
-        loggedIn = result;        
+        if (result.get("isVaild") == "True"){
+            loggedIn = true;
+        }else {
+            loggedIn = false;     
+        }
+        token = result.get("token");
+        System.out.print("isValid:" + result.get("isVaild"));
+        System.out.print("token:" + result.get("token"));
         //Store session
         // externalContext.getSessionMap().put("LoginState", loggedIn);
         
-        if(result == true) {    
+        if(loggedIn == true) {    
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", user.getUsername());  
         } else {   
             msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid Username or Password");  
         }  
         FacesContext.getCurrentInstance().addMessage(null, msg);  
-        context.addCallbackParam("loggedIn", loggedIn); 
+        context.addCallbackParam("loggedIn", loggedIn);
+        context.addCallbackParam("token", token);
     }	
 	
     //Get Queryentities by user

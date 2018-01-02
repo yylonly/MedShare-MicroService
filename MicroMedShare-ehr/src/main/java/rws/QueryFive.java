@@ -12,21 +12,21 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
-import ejb.QueryFourBean;
+import ejb.QueryFiveBean;
 import java.io.UnsupportedEncodingException;
 import javax.ws.rs.QueryParam;
 
-@Path("queryfour")
-public class QueryFour {
+@Path("queryfive")
+public class QueryFive {
 
     @Context
     private UriInfo context;
     @EJB 
-    QueryFourBean bean;
+    QueryFiveBean bean;
     /**
      * Default constructor. 
      */
-    public QueryFour() {
+    public QueryFive() {
         // TODO Auto-generated constructor stub
     }
 
@@ -52,15 +52,22 @@ public class QueryFour {
             return "";
         }
         
-    	String sql = "SELECT new result.QueryFourListResult(p.gender, COUNT(c.patientID.pid)) " +
-    			"FROM Clinicaldetection c, Patient p " +
-                        "WHERE c.patientID.pid = p.pid " +
-                        "AND c.times = \'1\' " +
-                        "AND c.hBsAg = \'0\' " +
-                        "AND c.patientID.pid IN ( SELECT cl.patientID.pid FROM Clinicaldetection cl " +
-                        "WHERE cl.times = \'3\' " +
-                        "AND cl.antiHBs = \'0\' ) " +
-                        "GROUP BY p.gender ";
+        // SELECT DISTINCT COUNT(pres.PID) as PresNum
+        // FROM prescription as pres
+        // WHERE pres.Pres_Date BETWEEN '2017-1-1' AND '2017-12-31';
+        String sql = "SELECT new result.QueryFiveListResult(COUNT(pres.pid)) "
+                + "FROM Prescription pres "
+                + "WHERE pres.presDate BETWEEN \'2017-1-1\' AND \'2017-12-31\' ";
+        
+//    	String sql = "SELECT new result.QueryFourListResult(p.gender, COUNT(c.patientID.pid)) " +
+//    			"FROM Clinicaldetection c, Patient p " +
+//                        "WHERE c.patientID.pid = p.pid " +
+//                        "AND c.times = \'1\' " +
+//                        "AND c.hBsAg = \'0\' " +
+//                        "AND c.patientID.pid IN ( SELECT cl.patientID.pid FROM Clinicaldetection cl " +
+//                        "WHERE cl.times = \'3\' " +
+//                        "AND cl.antiHBs = \'0\' ) " +
+//                        "GROUP BY p.gender ";
     	return  bean.query(sql);
     }
 }

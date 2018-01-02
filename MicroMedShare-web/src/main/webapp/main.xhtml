@@ -123,7 +123,7 @@
 <!--                                    <h:outputLink value="#{item.url}" title="Query Result">RunNoA</h:outputLink> -->
                                     <p:lightBox iframe="true" height="500px" >
                                         
-                                        <h:outputLink value="#{item.url}" title="Query Result">
+                                        <h:outputLink value="#{item.url}?token=#{loginBean.token}" title="Query Result">
                                             RunNoA
                                             <!--<h:outputText value ="Run No A " />-->
                                         </h:outputLink>

@@ -76,6 +76,8 @@ public class Patient implements Serializable {
     @OneToMany(mappedBy = "patientID")
     private Collection<Clinicaldetection> clinicaldetectionCollection;
     @OneToMany(mappedBy = "patientID")
+    private Collection<Prescription> prescriptionCollection;
+    @OneToMany(mappedBy = "patientID")
     private Collection<Examination> examinationCollection;
 
     public Patient() {
@@ -164,6 +166,15 @@ public class Patient implements Serializable {
 
     public void setClinicaldetectionCollection(Collection<Clinicaldetection> clinicaldetectionCollection) {
         this.clinicaldetectionCollection = clinicaldetectionCollection;
+    }
+
+    @XmlTransient
+    public Collection<Prescription> getPrescriptionCollection() {
+        return prescriptionCollection;
+    }
+
+    public void setPrescriptionCollection(Collection<Prescription> prescriptionCollection) {
+        this.prescriptionCollection = prescriptionCollection;
     }
 
     @XmlTransient

@@ -12,21 +12,22 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
-import ejb.QueryFourBean;
+import ejb.QuerySevenBean;
 import java.io.UnsupportedEncodingException;
 import javax.ws.rs.QueryParam;
+import result.QuerySevenListResult;
 
-@Path("queryfour")
-public class QueryFour {
+@Path("queryseven")
+public class QuerySeven {
 
     @Context
     private UriInfo context;
     @EJB 
-    QueryFourBean bean;
+    QuerySevenBean bean;
     /**
      * Default constructor. 
      */
-    public QueryFour() {
+    public QuerySeven() {
         // TODO Auto-generated constructor stub
     }
 
@@ -51,16 +52,29 @@ public class QueryFour {
             //Invalid signature/claims
             return "";
         }
+        String numBelow18SQL = "SELECT COUNT(p.pid) "
+                + "FROM Paientmed p "
+                + "WHERE p.name = \'Acetaminophen\' "
+                + "AND FUNC('YEAR', CURRENT_DATE) - FUNC('YEAR', p.doB) < 18";
+        long numBelow18 = bean.query(numBelow18SQL);
         
-    	String sql = "SELECT new result.QueryFourListResult(p.gender, COUNT(c.patientID.pid)) " +
-    			"FROM Clinicaldetection c, Patient p " +
-                        "WHERE c.patientID.pid = p.pid " +
-                        "AND c.times = \'1\' " +
-                        "AND c.hBsAg = \'0\' " +
-                        "AND c.patientID.pid IN ( SELECT cl.patientID.pid FROM Clinicaldetection cl " +
-                        "WHERE cl.times = \'3\' " +
-                        "AND cl.antiHBs = \'0\' ) " +
-                        "GROUP BY p.gender ";
-    	return  bean.query(sql);
+        String num18to40SQL = "SELECT COUNT( p.pid) "
+                + "FROM Paientmed p "
+                + "WHERE p.name = \'Acetaminophen\' "
+                + "AND FUNC('YEAR', CURRENT_DATE) - FUNC('YEAR', p.doB) "
+                + "BETWEEN 18 "
+                + "AND 40 ";
+        long num18to40 = bean.query(num18to40SQL);
+
+        String numAbove40SQL = "SELECT COUNT( p.pid) "
+                + "FROM Paientmed p "
+                + "WHERE p.name = \'Acetaminophen\' "
+                + "AND FUNC('YEAR', CURRENT_DATE) - FUNC('YEAR', p.doB) > 40";
+        long numAbove40 = bean.query(numAbove40SQL);
+        
+        QuerySevenListResult querySevenListResult = new QuerySevenListResult(numBelow18, num18to40, numAbove40);
+  
+        return querySevenListResult.toJson();
+        
     }
 }

@@ -7,12 +7,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import ejb.QueryOneBean;
+import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.transaction.UserTransaction;
+import javax.ws.rs.QueryParam;
 
 
 @Path("queryone")
@@ -33,14 +40,25 @@ public class QueryOne {
 
     /**
      * Retrieves representation of an instance of QueryOne
+     * @param token
      * @return an instance of String
      */
     @GET 
     @Produces("application/json")
-    public String getHtml() {
-        // TODO return proper representation object
-//        String sql = "SELECT new result.DQListResult(p.country,  1) "
-//                + "FROM Patient p ";
+    public String getHtml(@QueryParam("token") String token) {
+        // TODO return proper representation object    
+        try {
+            Algorithm algorithm = Algorithm.HMAC256("secret");
+            JWTVerifier verifier = JWT.require(algorithm)
+                .withIssuer("auth0")
+                .build(); //Reusable verifier instance
+            DecodedJWT jwt = verifier.verify(token);
+        } catch (UnsupportedEncodingException exception){
+            //UTF-8 encoding not supported
+        } catch (JWTVerificationException exception){
+            //Invalid signature/claims
+            return "";
+        }
          
         String sql = "SELECT new result.DQListResult(p.country,  COUNT(e.reportID)) "
             + "FROM Examination e, Patient p "

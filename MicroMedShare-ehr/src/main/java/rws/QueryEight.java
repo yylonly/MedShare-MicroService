@@ -12,21 +12,21 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
-import ejb.QueryFourBean;
+import ejb.QueryEightBean;
 import java.io.UnsupportedEncodingException;
 import javax.ws.rs.QueryParam;
 
-@Path("queryfour")
-public class QueryFour {
+@Path("queryeight")
+public class QueryEight {
 
     @Context
     private UriInfo context;
     @EJB 
-    QueryFourBean bean;
+    QueryEightBean bean;
     /**
      * Default constructor. 
      */
-    public QueryFour() {
+    public QueryEight() {
         // TODO Auto-generated constructor stub
     }
 
@@ -52,15 +52,26 @@ public class QueryFour {
             return "";
         }
         
-    	String sql = "SELECT new result.QueryFourListResult(p.gender, COUNT(c.patientID.pid)) " +
-    			"FROM Clinicaldetection c, Patient p " +
-                        "WHERE c.patientID.pid = p.pid " +
-                        "AND c.times = \'1\' " +
-                        "AND c.hBsAg = \'0\' " +
-                        "AND c.patientID.pid IN ( SELECT cl.patientID.pid FROM Clinicaldetection cl " +
-                        "WHERE cl.times = \'3\' " +
-                        "AND cl.antiHBs = \'0\' ) " +
-                        "GROUP BY p.gender ";
+        // SELECT DISTINCT COUNT(pres.PID) as PresNum
+        // FROM prescription as pres
+        // WHERE pres.Pres_Date BETWEEN '2017-1-1' AND '2017-12-31';
+        String sql = "SELECT new result.QueryEightListResult(m.name, COUNT(pres.pid)) "
+                + "FROM Prescription pres, Prescriptmed pred, Medication m "
+                + "WHERE pres.pid = pred.prescription.pid "
+                + "AND pred.medication.mid = m.mid "
+                + "AND pres.presDate BETWEEN \'2017-1-1\' AND \'2017-12-31\' "
+                + "GROUP BY m.mid ";
+
+        
+//    	String sql = "SELECT new result.QueryFourListResult(p.gender, COUNT(c.patientID.pid)) " +
+//    			"FROM Clinicaldetection c, Patient p " +
+//                        "WHERE c.patientID.pid = p.pid " +
+//                        "AND c.times = \'1\' " +
+//                        "AND c.hBsAg = \'0\' " +
+//                        "AND c.patientID.pid IN ( SELECT cl.patientID.pid FROM Clinicaldetection cl " +
+//                        "WHERE cl.times = \'3\' " +
+//                        "AND cl.antiHBs = \'0\' ) " +
+//                        "GROUP BY p.gender ";
     	return  bean.query(sql);
     }
 }
