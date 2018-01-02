@@ -14,8 +14,10 @@ import javax.ws.rs.core.UriInfo;
 
 import net.mydreamy.med.ejb.QueryEightBean;
 import java.io.UnsupportedEncodingException;
+import javax.ejb.Stateless;
 import javax.ws.rs.QueryParam;
 
+@Stateless
 @Path("queryeight")
 public class QueryEight {
 

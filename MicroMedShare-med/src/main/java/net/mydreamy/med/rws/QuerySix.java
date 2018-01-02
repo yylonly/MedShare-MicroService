@@ -14,8 +14,10 @@ import javax.ws.rs.core.UriInfo;
 
 import net.mydreamy.med.ejb.QuerySixBean;
 import java.io.UnsupportedEncodingException;
+import javax.ejb.Stateless;
 import javax.ws.rs.QueryParam;
 
+@Stateless
 @Path("querysix")
 public class QuerySix {
 

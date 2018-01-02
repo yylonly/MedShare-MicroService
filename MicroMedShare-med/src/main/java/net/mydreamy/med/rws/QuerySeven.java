@@ -14,9 +14,11 @@ import javax.ws.rs.core.UriInfo;
 
 import net.mydreamy.med.ejb.QuerySevenBean;
 import java.io.UnsupportedEncodingException;
+import javax.ejb.Stateless;
 import javax.ws.rs.QueryParam;
 import net.mydreamy.med.result.QuerySevenListResult;
 
+@Stateless
 @Path("queryseven")
 public class QuerySeven {
 

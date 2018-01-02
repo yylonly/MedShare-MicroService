@@ -14,9 +14,11 @@ import javax.ws.rs.core.UriInfo;
 
 import net.mydreamy.ehr.ejb.QueryThreeBean;
 import java.io.UnsupportedEncodingException;
+import javax.ejb.Stateless;
 import javax.ws.rs.QueryParam;
 import net.mydreamy.ehr.result.NumberOfAge;
 
+@Stateless
 @Path("querythree")
 public class QueryThree {
 

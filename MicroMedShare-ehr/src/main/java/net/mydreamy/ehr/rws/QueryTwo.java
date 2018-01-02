@@ -14,8 +14,10 @@ import javax.ws.rs.core.UriInfo;
 
 import net.mydreamy.ehr.ejb.QueryTwoBean;
 import java.io.UnsupportedEncodingException;
+import javax.ejb.Stateless;
 import javax.ws.rs.QueryParam;
 
+@Stateless
 @Path("querytwo")
 public class QueryTwo {
     @Context

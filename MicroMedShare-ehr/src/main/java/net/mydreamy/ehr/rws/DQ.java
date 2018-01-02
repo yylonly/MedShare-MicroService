@@ -10,12 +10,13 @@ import javax.ws.rs.core.UriInfo;
 
 import net.mydreamy.ehr.ejb.QueryBean;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 import net.mydreamy.ehr.result.ListResult;
 
-
+@Stateless
 @Path("dq")
 public class DQ {
 	
