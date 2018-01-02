@@ -22,7 +22,7 @@ public class DynamicQueryBean
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", format.format(event.getObject())));
         
-        URL = "http://127.0.0.1:8080/EHR/rws/dq?startdate=" + new SimpleDateFormat("yyyy-MM-dd").format(startdate) + "&enddate=" + new SimpleDateFormat("yyyy-MM-dd").format(enddate);
+        URL = "http://127.0.0.1:8080/MicroMedShare-web/rws/dq?startdate=" + new SimpleDateFormat("yyyy-MM-dd").format(startdate) + "&enddate=" + new SimpleDateFormat("yyyy-MM-dd").format(enddate);
     } 
 	
     public void endDateSelect(SelectEvent event) {
@@ -31,7 +31,7 @@ public class DynamicQueryBean
         facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", format.format(event.getObject())));
         
         //finished URL
-        URL = "http://127.0.0.1:8080/EHR/rws/dq?startdate=" + new SimpleDateFormat("yyyy-MM-dd").format(startdate) + "&enddate=" + new SimpleDateFormat("yyyy-MM-dd").format(enddate);
+        URL = "http://127.0.0.1:8080/MicroMedShare-web/rws/dq?startdate=" + new SimpleDateFormat("yyyy-MM-dd").format(startdate) + "&enddate=" + new SimpleDateFormat("yyyy-MM-dd").format(enddate);
     } 
 	   
     public void dynamicQuery() {

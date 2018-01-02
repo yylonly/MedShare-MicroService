@@ -14,6 +14,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
+import net.mydreamy.ehr.result.DQListResult;
 import net.mydreamy.ehr.result.ListResult;
 
 @Stateless
@@ -69,16 +70,29 @@ public class DQ {
     public String getHtml(@QueryParam("startdate") String startdate, @QueryParam("enddate") String enddate) {
         // TODO return proper representation object
         //Run Query :name is vaibiles, result is a list type of ListResult
-        String sql = "SELECT new net.mydreamy.ehr.result.DQListResult(p.country,  COUNT(e.reportID))"
-                + "FROM Examination e, Patient p"
+        String sql = "SELECT new net.mydreamy.ehr.result.DQListResult(p.country,  COUNT(e.reportID)) "
+                + "FROM Examination e, Patient p "
                 + "WHERE e.patientID = p.pid"
-                + "AND e.endoscopyDate BETWEEN :startdate AND :enddate"
-                + "GROUP BY p.country"
+                + "AND e.endoscopyDate BETWEEN :startdate AND :enddate "
+                + "GROUP BY p.country "
                 + "ORDER BY COUNT(e.reportID) DESC";
-        Query query =  emf.createEntityManager().createNativeQuery(sql);
+        Query query =  emf.createEntityManager().createQuery(sql);
+        query.setParameter("startdate", startdate);
+        query.setParameter("enddate", enddate);
         
-        List<ListResult> result = query.getResultList();
-        System.out.print("result size:" + result.size());
-	return ""; 
+        String result = "[";
+        @SuppressWarnings("unchecked")
+	List<DQListResult> list = query.getResultList();
+        for(int i = 0; i < list.size(); i++){
+            DQListResult item = list.get(i);
+            
+            if (i == list.size() - 1){
+                result += item.toJson();
+            }else {
+                result += item.toJson() + ",";
+            }
+        }	
+        result += "]";
+	return result;
     }
 }

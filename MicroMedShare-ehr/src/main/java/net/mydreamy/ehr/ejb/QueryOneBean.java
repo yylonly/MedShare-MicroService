@@ -50,9 +50,7 @@ public class QueryOneBean {
             }else {
                 result += item.toJson() + ",";
             }
-        }
-//        System.out.print("list size:" + list.size());
-	
+        }	
         result += "]";
 	return result;
     }
