@@ -1,8 +1,8 @@
 package mangedbean;
 
-import entity.User;
+import net.mydreamy.auth.entity.User;
 import net.mydreamy.auth.CheckLogin;
-import ejb.ListQuerys;
+import net.mydreamy.auth.ejb.ListQuerys;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 import org.primefaces.context.RequestContext;
-import result.ListResult;
+import net.mydreamy.auth.result.ListResult;
 
 
 @ManagedBean

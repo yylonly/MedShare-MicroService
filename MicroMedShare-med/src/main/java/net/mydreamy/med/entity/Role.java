@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.mydreamy.auth.entity;
+package net.mydreamy.med.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -34,8 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Role.findByName", query = "SELECT r FROM Role r WHERE r.name = :name")})
 public class Role implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "role")
-    private Collection<Querytorole> querytoroleCollection;
+    @Size(max = 255)
+    @Column(name = "NAME")
+    private String name;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -43,9 +44,8 @@ public class Role implements Serializable {
     @NotNull
     @Column(name = "ID")
     private Integer id;
-    @Size(max = 255)
-    @Column(name = "NAME")
-    private String name;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "role")
+    private Collection<Querytorole> querytoroleCollection;
     @OneToMany(mappedBy = "role")
     private Collection<User> userCollection;
 
@@ -64,12 +64,14 @@ public class Role implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+
+    @XmlTransient
+    public Collection<Querytorole> getQuerytoroleCollection() {
+        return querytoroleCollection;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setQuerytoroleCollection(Collection<Querytorole> querytoroleCollection) {
+        this.querytoroleCollection = querytoroleCollection;
     }
 
     @XmlTransient
@@ -103,15 +105,15 @@ public class Role implements Serializable {
 
     @Override
     public String toString() {
-        return "net.mydreamy.auth.Role[ id=" + id + " ]";
+        return "entity.Role[ id=" + id + " ]";
     }
 
-    @XmlTransient
-    public Collection<Querytorole> getQuerytoroleCollection() {
-        return querytoroleCollection;
+    public String getName() {
+        return name;
     }
 
-    public void setQuerytoroleCollection(Collection<Querytorole> querytoroleCollection) {
-        this.querytoroleCollection = querytoroleCollection;
+    public void setName(String name) {
+        this.name = name;
     }
+    
 }

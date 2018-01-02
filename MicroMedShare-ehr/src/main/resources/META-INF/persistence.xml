@@ -2,20 +2,20 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="EHR" transaction-type="JTA">
     <jta-data-source>jdbc/mysql</jta-data-source>
-    <class>entity.Clinicaldetection</class>
-    <class>entity.Doctor</class>
-    <class>entity.Examination</class>
-    <class>entity.Medication</class>
-    <class>entity.Paientmed</class>
-    <class>entity.Patient</class>
-    <class>entity.Prescription</class>
-    <class>entity.Prescriptmed</class>
-    <class>entity.Querylist</class>
-    <class>entity.Querytorole</class>
-    <class>entity.Role</class>
-    <class>entity.Sequence</class>
-    <class>entity.Urlforwebservice</class>
-    <class>entity.User</class>
+    <class>net.mydreamy.ehr.entity.Paientmed</class>
+    <class>net.mydreamy.ehr.entity.Medication</class>
+    <class>net.mydreamy.ehr.entity.Patient</class>
+    <class>net.mydreamy.ehr.entity.User</class>
+    <class>net.mydreamy.ehr.entity.Sequence</class>
+    <class>net.mydreamy.ehr.entity.Querylist</class>
+    <class>net.mydreamy.ehr.entity.Urlforwebservice</class>
+    <class>net.mydreamy.ehr.entity.Doctor</class>
+    <class>net.mydreamy.ehr.entity.Querytorole</class>
+    <class>net.mydreamy.ehr.entity.Prescription</class>
+    <class>net.mydreamy.ehr.entity.Role</class>
+    <class>net.mydreamy.ehr.entity.Prescriptmed</class>
+    <class>net.mydreamy.ehr.entity.Clinicaldetection</class>
+    <class>net.mydreamy.ehr.entity.Examination</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>

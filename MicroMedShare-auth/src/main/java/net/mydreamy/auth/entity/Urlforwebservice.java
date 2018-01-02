@@ -8,7 +8,6 @@ package net.mydreamy.auth.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -26,16 +25,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author lp
  */
 @Entity
-@Table(name = "role")
+@Table(name = "urlforwebservice")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r")
-    , @NamedQuery(name = "Role.findById", query = "SELECT r FROM Role r WHERE r.id = :id")
-    , @NamedQuery(name = "Role.findByName", query = "SELECT r FROM Role r WHERE r.name = :name")})
-public class Role implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "role")
-    private Collection<Querytorole> querytoroleCollection;
+    @NamedQuery(name = "Urlforwebservice.findAll", query = "SELECT u FROM Urlforwebservice u")
+    , @NamedQuery(name = "Urlforwebservice.findById", query = "SELECT u FROM Urlforwebservice u WHERE u.id = :id")
+    , @NamedQuery(name = "Urlforwebservice.findByUrl", query = "SELECT u FROM Urlforwebservice u WHERE u.url = :url")})
+public class Urlforwebservice implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,15 +40,15 @@ public class Role implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Size(max = 255)
-    @Column(name = "NAME")
-    private String name;
-    @OneToMany(mappedBy = "role")
-    private Collection<User> userCollection;
+    @Column(name = "URL")
+    private String url;
+    @OneToMany(mappedBy = "urlid")
+    private Collection<Querylist> querylistCollection;
 
-    public Role() {
+    public Urlforwebservice() {
     }
 
-    public Role(Integer id) {
+    public Urlforwebservice(Integer id) {
         this.id = id;
     }
 
@@ -64,21 +60,21 @@ public class Role implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUrl() {
+        return url;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @XmlTransient
-    public Collection<User> getUserCollection() {
-        return userCollection;
+    public Collection<Querylist> getQuerylistCollection() {
+        return querylistCollection;
     }
 
-    public void setUserCollection(Collection<User> userCollection) {
-        this.userCollection = userCollection;
+    public void setQuerylistCollection(Collection<Querylist> querylistCollection) {
+        this.querylistCollection = querylistCollection;
     }
 
     @Override
@@ -91,10 +87,10 @@ public class Role implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Role)) {
+        if (!(object instanceof Urlforwebservice)) {
             return false;
         }
-        Role other = (Role) object;
+        Urlforwebservice other = (Urlforwebservice) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -103,15 +99,7 @@ public class Role implements Serializable {
 
     @Override
     public String toString() {
-        return "net.mydreamy.auth.Role[ id=" + id + " ]";
+        return "net.mydreamy.auth.entity.Urlforwebservice[ id=" + id + " ]";
     }
-
-    @XmlTransient
-    public Collection<Querytorole> getQuerytoroleCollection() {
-        return querytoroleCollection;
-    }
-
-    public void setQuerytoroleCollection(Collection<Querytorole> querytoroleCollection) {
-        this.querytoroleCollection = querytoroleCollection;
-    }
+    
 }

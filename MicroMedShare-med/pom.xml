@@ -2,57 +2,55 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-    <artifactId>MicroMedShare</artifactId>
-    <groupId>net.mydreamy</groupId>
-    <version>1.0-SNAPSHOT</version>
-  </parent>
+        <artifactId>MicroMedShare</artifactId>
+        <groupId>net.mydreamy</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
     <groupId>net.mydreamy</groupId>
-    <artifactId>MicroMedShare-web</artifactId>
+    <artifactId>MicroMedShare-med</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>ejb</packaging>
 
-    <name>MicroMedShare-web</name>
+    <name>MicroMedShare-med</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+
     <dependencies>
-                <!-- https://mvnrepository.com/artifact/org.primefaces/primefaces -->
         <dependency>
-            <groupId>org.primefaces</groupId>
-            <artifactId>primefaces</artifactId>
-            <version>6.1</version>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.3.0</version>
         </dependency>
         <dependency>
-            <groupId>net.mydreamy</groupId>
-            <artifactId>MicroMedShare-auth</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>2.5.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.mydreamy</groupId>
-            <artifactId>MicroMedShare-ehr</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.mydreamy</groupId>
-            <artifactId>MicroMedShare-med</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
+            <version>2.5.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
-            <artifactId>javaee-web-api</artifactId>
+            <artifactId>javaee-api</artifactId>
             <version>8.0</version>
             <scope>provided</scope>
         </dependency>
-        
 
-        
+                <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.45</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -71,10 +69,10 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
+                <artifactId>maven-ejb-plugin</artifactId>
                 <version>2.3</version>
                 <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <ejbVersion>3.1</ejbVersion>
                 </configuration>
             </plugin>
             <plugin>
