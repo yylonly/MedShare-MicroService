@@ -1,7 +1,13 @@
 version: '3'
 services:
-
-
+  glassfish:
+    build: .
+    ports:
+      - 8080:8080
+      - 4848:4848
+    depends_on:
+      - mysql
+      
   mysql:
     build: ./DB
     environment:
@@ -11,11 +17,3 @@ services:
       MYSQL_PASSWORD: ehr
       MYSQL_ROOT_HOST: '%'
 
-
-  glassfish:
-    build: .
-    ports:
-      - 8080:8080
-      - 4848:4848
-    depends_on:
-      - mysql

@@ -37,7 +37,6 @@ RUN yum -y install wget net-tools unzip vim && \
 #RUN mysqld --initialize --explicit_defaults_for_timestamp
 
 # copy target file
-COPY MicroMedShare-ear/target/MicroMedShare-ear-1.0-SNAPSHOT.ear /medshare.ear
 COPY wait-for-it.sh /wait-for-it.sh
 COPY deploy.sh /deploy.sh
 
@@ -56,14 +55,14 @@ RUN echo "AS_ADMIN_PASSWORD=" > /tmp/glassfishpwd && \
     asadmin --user=admin --passwordfile=/tmp/glassfishpwd create-jdbc-resource --connectionpoolid mysqlpool jdbc/mysql && \ 
 #    asadmin --user=admin --passwordfile=/tmp/glassfishpwd deploy /medshare.ear && \
     asadmin --user=admin stop-domain
- 
-#docker-entrypoint.sh /entrypoint.sh
-#RUN chmod +x /entrypoint.sh
-#ENTRYPOINT ["/entrypoint.sh"]
+
+#deploy	
+COPY MicroMedShare-ear/target/MicroMedShare-ear-1.0-SNAPSHOT.ear $GLASSFISH_HOME/glassfish/domains/domain1/autodeploy/medshare.ear
 
 # Ports being exposed
 EXPOSE 4848 8080 8181
 
 # Start asadmin console and the domain
 CMD ["asadmin", "start-domain", "-v"]
-ENTRYPOINT ["/deploy.sh"]
+#ENTRYPOINT ["/deploy.sh"]
+
