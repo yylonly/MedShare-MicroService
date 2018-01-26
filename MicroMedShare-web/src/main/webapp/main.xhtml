@@ -6,7 +6,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
-<f:view>
+<f:view contentType="text/html">
 <h:head>
 	<!-- css style -->
 	<h:outputStylesheet name="css/style.css" />
@@ -67,7 +67,7 @@
 		            <p:menuitem value="De-identification" url="#" />  
 		            <p:menuitem value="SQL injection" url="#"  />  
 		        </p:submenu>  
-		        <p:menuitem value="Dynamic Query" url="dynamicq.jsf" />   
+		        <p:menuitem value="Dynamic Query" url="newjsf.xhtml" />   
 	
 				<p:menuitem value="Contact" url="http://yylife.me" /> 
 				
@@ -83,7 +83,7 @@
 	   <!-- Querylist -->
    	   <p:layoutUnit id="center" position="center">  
 			 <h:form id="resultform">
-			 		
+                             <f:view contentType="text/html">
 			 	<!-- rsquerylist bind to this table -->	
 				<p:dataTable id="result" value="#{loginBean.rsquerylist}" var="item"  >			 
 				
@@ -117,25 +117,29 @@
 				  <h:outputText id="url" value="#{item.url}">Run</h:outputText>
 				</p:column>
 				<p:column>
-				  <f:facet name="header">
-				  <h:outputText value="Running Along"/>
-				  </f:facet>
-				 			  
-				   <h:outputLink value="#{item.url}" title="Query Result">     	    
-		       	     RunNoA
-		   		   </h:outputLink> 
-				    
+                                    <f:facet name="header">
+                                        <h:outputText value="Running Along" />
+                                    </f:facet>
+<!--                                    <h:outputLink value="#{item.url}" title="Query Result">RunNoA</h:outputLink> -->
+                                    <p:lightBox iframe="true" height="500px" >
+                                        
+                                        <h:outputLink value="#{item.url}?token=#{loginBean.token}" title="Query Result">
+                                            RunNoA
+                                            <!--<h:outputText value ="Run No A " />-->
+                                        </h:outputLink>
+                                        
+                                    </p:lightBox>
 				</p:column>	
 				<p:column>
-				  <f:facet name="header">
-				  <h:outputText value="Running with Ajax"/>
-				  </f:facet>
+                                    <f:facet name="header">
+                                        <h:outputText value="Running with Ajax"/>
+                                    </f:facet>
 				 			  
-		    	  <p:lightBox iframe="true">  
-		   			 <h:outputLink value="#{item.url}" title="Query Result">     	    
-		       	     <p:commandButton value="RunA" icon="ui-icon-play"  />  
-		   			 </h:outputLink> 
-				  </p:lightBox>  
+                                    <p:lightBox iframe="true">  
+                                        <h:outputLink value="#{item.url}" title="Query Result">     	    
+                                            <p:commandButton value="RunA" icon="ui-icon-play"  />  
+                                        </h:outputLink> 
+                                    </p:lightBox>  
 				    
 				</p:column>			
 							
@@ -146,7 +150,7 @@
 		            <p:graphicImage value="/resources/images/xml.png" />  
 		            <p:dataExporter type="xml" target="result" fileName="querylist" />  
 		        </h:commandLink>   --> 
-				
+			</f:view>
 			 </h:form>
 
    	   </p:layoutUnit>

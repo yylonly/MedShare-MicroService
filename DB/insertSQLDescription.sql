@@ -1,0 +1,14 @@
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+/**
+ * Author:  lp
+ * Created: Jan 2, 2018
+ */
+
+INSERT INTO `ehr`.`querylist` (`ID`, `DESCRIPTION`, `SQLQUERY`, `urlid`) VALUES ('5', 'Total number of prescription made up from January 1, 2017 to December 31, 2017.', 'SELECT DISTINCT COUNT(pres.PID) as PresNum FROM prescription as pres WHERE pres.Pres_Date BETWEEN \'2017-1-1\' AND \'2017-12-31\';', '5');
+INSERT INTO `ehr`.`querylist` (`ID`, `DESCRIPTION`, `SQLQUERY`, `urlid`) VALUES ('6', 'Total number of patients who received medical prescription from the doctor Tom Baker from January 1, 2017 to December 31, 2017.', 'SELECT DISTINCT COUNT(p.PID) FROM patient as p, doctor as d, prescription as pres WHERE p.PID = pres.Patient_ID      and d.DID = pres.Doctor_ID     and d.Name = \'Tom\' and d.Surname = \'Baker\'     and pres.Pres_Date BETWEEN \'2017-1-1\' AND \'2017-12-31\'; ', '6');
+INSERT INTO `ehr`.`querylist` (`ID`, `DESCRIPTION`, `SQLQUERY`, `urlid`) VALUES ('7', 'Age profile of patients who took the medication Acetaminophen from January 1, 2017 to December 31, 2017.', 'SELECT patient.PID, patient.DoB, medication.Name FROM patient, prescription, prescriptmed, medication WHERE patient.PID = prescription.Patient_ID     and prescription.PID = prescriptmed.PRESCRIPTID     and prescriptmed.MEDID = medication.MID     and prescription.Pres_Date BETWEEN \'2017-1-1\' AND \'2017-12-31\'; SELECT * FROM (     SELECT DISTINCT COUNT( PID ) AS NumBelow18    FROM PaientMed   WHERE name = \'Acetaminophen\'      AND YEAR( CURRENT_DATE( ) ) - YEAR( DoB ) <18  ) AS NumBelow18,  (     SELECT DISTINCT COUNT( PID ) AS NumBelow18    FROM PaientMed   WHERE name = \'Acetaminophen\'      AND YEAR( CURRENT_DATE( ) ) - YEAR( DoB ) BETWEEN 18  AND 40  ) AS Num18to40,  (   SELECT DISTINCT COUNT( PID ) AS NumAbove40    FROM PaientMed   WHERE name = \'Acetaminophen\'      AND YEAR( CURRENT_DATE( ) ) - YEAR( DoB ) >40  ) AS NumAbove40;', '7');
+INSERT INTO `ehr`.`querylist` (`ID`, `DESCRIPTION`, `SQLQUERY`, `urlid`) VALUES ('8', 'Top 5 medication prescripted by doctors and for each medication the number of prescriptions which took it from from January 1, 2017 to December 31, 2017.', 'SELECT medication.Name, COUNT(prescription.PID) as TotalNum FROM prescription, prescriptmed, medication WHERE prescription.PID = prescriptmed.PRESCRIPTID     and prescriptmed.MEDID = medication.MID     and prescription.Pres_Date BETWEEN \'2017-1-1\' AND \'2017-12-31\' GROUP BY medication.MID LIMIT 5;', '8');
