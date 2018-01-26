@@ -14,7 +14,7 @@
 ### Build Environments
 * docker login (the account requires purchased serverjre)
 * docker-compose build (build images)
-* docker-compose up (run containers)
+* docker-compose up (maybe failure because of staring auto-deploy before database start up, try one more time, let both glassfish and MySQL container up)
 
 ### Test MedShare
 * Glassfish Management http://127.0.0.1:4848 (username:admin password:glassfish)
