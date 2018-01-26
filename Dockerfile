@@ -37,10 +37,8 @@ RUN yum -y install wget net-tools unzip vim && \
 #RUN mysqld --initialize --explicit_defaults_for_timestamp
 
 # copy target file
-COPY wait-for-it.sh /wait-for-it.sh
 COPY deploy.sh /deploy.sh
 
-RUN chmod +x /wait-for-it.sh
 RUN chmod +x /deploy.sh
 
 # setup glassfish, and then deploy
