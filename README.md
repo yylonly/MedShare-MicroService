@@ -21,3 +21,7 @@
 * MedShare will be avaible on http://127.0.0.1:8080/MicroMedShare-web/
 * username: admin 
 * password: 123
+
+### Please cite our paper as follows:
+
+Yang Y, Zu Q, Liu P, Ouyang D, Li X. MicroShare: Privacy-Preserved Medical Resource Sharing through MicroService Architecture. Int J Biol Sci 2018; 14(8):907-919. doi:10.7150/ijbs.24617. Available from http://www.ijbs.com/v14p0907.htm
