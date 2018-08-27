@@ -1,15 +1,18 @@
 # Glassfish 5 and Java EE 8
-FROM store/oracle/serverjre:8 
+#FROM store/oracle/serverjre:8 
+FROM openjdk:8
 
 # Maintainer
 MAINTAINER YilongYang <yylonly@gmail.com>
 
+#ENV GLASSFISH_PKG=glassfish-5.0.zip \
+#    GLASSFISH_URL=http://download.oracle.com/glassfish/5.0/release/glassfish-5.0.zip \
+
 # Set environment variables and default password for user 'admin'
-ENV GLASSFISH_PKG=glassfish-5.0.zip \
-    GLASSFISH_URL=http://download.oracle.com/glassfish/5.0/release/glassfish-5.0.zip \
-    GLASSFISH_HOME=/glassfish5 \
-    MD5=c87ad9b589db15973f5c80773171b5b4 \
-    PATH=$PATH:/glassfish5/bin:/apache-maven-3.5.2/bin \
+ENV GLASSFISH_PKG=payara-5.182 \
+    GLASSFISH_URL=https://s3-eu-west-1.amazonaws.com/payara.fish/Payara+Downloads/5.182/payara-5.182.zip \
+    GLASSFISH_HOME=/payara5 \
+    PATH=$PATH:/payara5/bin:/apache-maven-3.5.2/bin \
     ADMIN_PASSWORD=glassfish \
     JDBCDRIVER=http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.30/mysql-connector-java-5.1.30.jar
 #    MAVEN_PKG=apache-maven-3.5.2-bin.tar.gz \
@@ -22,10 +25,13 @@ ENV GLASSFISH_PKG=glassfish-5.0.zip \
 #ARG PACKAGE_URL=https://repo.mysql.com/yum/mysql-5.7-community/docker/x86_64/mysql-community-server-minimal-5.7.21-1.el7.x86_64.rpm
 #ARG PACKAGE_URL_SHELL=https://repo.mysql.com/yum/mysql-tools-community/el/7/x86_64/mysql-shell-1.0.11-1.el7.x86_64.rpm
 
+
+#echo "$MD5 *$GLASSFISH_PKG" | md5sum -c - && \
+#RUN apt-get -y install wget unzip && \
 # Install packages, download and extract GlassFish
-RUN yum -y install wget net-tools unzip vim && \
+#RUN yum -y install wget net-tools unzip vim && \
+RUN apt-get -y install wget unzip && \
     curl -O $GLASSFISH_URL && \
-    echo "$MD5 *$GLASSFISH_PKG" | md5sum -c - && \
     unzip -o $GLASSFISH_PKG && \
     rm -f $GLASSFISH_PKG && \ 
     wget $JDBCDRIVER && \
@@ -38,6 +44,7 @@ RUN yum -y install wget net-tools unzip vim && \
 
 # copy target file
 COPY deploy.sh /deploy.sh
+COPY MicroMedShare-ear/target/MicroMedShare-ear-1.0-SNAPSHOT.ear /medshare.ear
 
 RUN chmod +x /deploy.sh
 
@@ -48,11 +55,14 @@ RUN echo "AS_ADMIN_PASSWORD=" > /tmp/glassfishpwd && \
     asadmin start-domain && \
     echo "AS_ADMIN_PASSWORD=${ADMIN_PASSWORD}" > /tmp/glassfishpwd && \
     asadmin --user=admin --passwordfile=/tmp/glassfishpwd enable-secure-admin && \ 
-    asadmin --user=admin restart-domain && \
+    asadmin --user=admin stop-domain && \
+    asadmin --user=admin start-domain && \
     asadmin --user=admin --passwordfile=/tmp/glassfishpwd create-jdbc-connection-pool --datasourceclassname com.mysql.jdbc.jdbc2.optional.MysqlDataSource --restype javax.sql.DataSource --property user=ehr:password=ehr:serverName=mysql:portNumber=3306:databaseName=ehr mysqlpool && \ 
     asadmin --user=admin --passwordfile=/tmp/glassfishpwd create-jdbc-resource --connectionpoolid mysqlpool jdbc/mysql && \ 
 #    asadmin --user=admin --passwordfile=/tmp/glassfishpwd deploy /medshare.ear && \
     asadmin --user=admin stop-domain
+#    asadmin --user=admin restart-domain && \
+#    asadmin --user=admin --passwordfile=/tmp/glassfishpwd deploy /medshare.ear && \
 
 #deploy	
 COPY MicroMedShare-ear/target/MicroMedShare-ear-1.0-SNAPSHOT.ear $GLASSFISH_HOME/glassfish/domains/domain1/autodeploy/medshare.ear
