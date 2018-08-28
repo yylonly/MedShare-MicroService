@@ -1,0 +1,45 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: microservice-mysql-deployment    
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: medshare-mysql
+  template:
+    metadata:
+      labels:
+        app: medshare-mysql
+    spec:
+      containers:
+      - image: yylonly/medshare_mysql:latest
+        name: medshare-mysql
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_DATABASE
+          value: ehr
+        - name: MYSQL_PASSWORD
+          value: ehr
+        - name: MYSQL_ROOT_HOST
+          value: '%'
+        - name: MYSQL_ROOT_PASSWORD
+          value: "123456"
+        - name: MYSQL_USER
+          value: ehr
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mysql
+spec:
+  selector:
+    app: medshare-mysql
+  ports:
+  - protocol: TCP
+    port: 3306
+
+
+  
+         

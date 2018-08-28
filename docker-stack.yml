@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+
+  medshare-glassfish:
+    image: yylonly/glassfish
+    ports:
+      - 8080:8080
+      - 4848:4848
+    networks:
+      - medshare-net
+    depends_on:
+      - medshare-db
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+  
+  medshare-db:
+    image: yylonly/mysql
+    networks:
+      - medshare-net
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: ehr 
+      MYSQL_USER: ehr
+      MYSQL_PASSWORD: ehr
+      MYSQL_ROOT_HOST: '%'  
+
+networks:
+  medshare-net:

@@ -1,0 +1,40 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: microservice-glassfish-deployment    
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: microservice-glassfish
+  template:
+    metadata:
+      labels:
+        app: microservice-glassfish
+    spec:
+      containers:
+      - image: yylonly/medshare_glassfish:latest
+        name: microservice-glassfish
+        ports:
+        - containerPort: 8080
+        - containerPort: 4848
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: microservice-glassfish-service
+spec:
+  selector:
+    app: microservice-glassfish
+  ports:
+  - name: "web"
+    protocol: TCP
+    port: 8080    
+    nodePort: 30000
+  - name: "manage"
+    protocol: TCP
+    port: 4848   
+    nodePort: 31000
+  type: NodePort         
+
+  

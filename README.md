@@ -2,23 +2,26 @@
 * JDK 8
 * Maven
 * Docker CE and Docker Compose (Note that Windows only supports 10 and above)
-* Sign up a account on Docker Store, and purchase the "serverjre" image (no cost required), because we need Java EE 8 for our system   
+* Kubernetes
 
 ### Git Clone Repo
 * git clone https://github.com/yylonly/MedShare-MicroService
 * cd MedShare-MicroService
 
-### Build You Package
+### Build You Package (Skip this step if deploying to Kubernetes)
 * mvn clean package
 
-### Build Environments
-* docker login (the account requires purchased serverjre)
+### Build Environments (Skip this step if deploying to Kubernetes)
 * docker-compose build (build images)
 * docker-compose up (maybe failure because of staring auto-deploy before database start up, try one more time, let both glassfish and MySQL container up)
 
+### Kubernetes Deployment
+* kubectl apply -f mysql.yaml
+* kubectl apply -f glassfish.yaml
+
 ### Test MedShare
-* Glassfish Management http://127.0.0.1:4848 (username:admin password:glassfish)
-* MedShare will be avaible on http://127.0.0.1:8080/MicroMedShare-web/
+* Glassfish Management http://127.0.0.1:31000 (username:admin password:glassfish)
+* MedShare will be avaible on http://127.0.0.1:30000/MicroMedShare-web/
 * username: admin 
 * password: 123
 
